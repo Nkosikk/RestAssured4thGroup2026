@@ -4,7 +4,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import payloadBuilder.UserPayload;
 
-import static commons.Routes.BASE_URL;
+import static commons.Routes_java.BASE_URL;
 import static io.restassured.RestAssured.given;
 
 public class UserRequestBuilder {
