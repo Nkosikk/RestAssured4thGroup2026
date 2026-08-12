@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import requestBuilder.AdminRequestBuilder;
 import requestBuilder.UserRequestBuilder;
 
-public class UserTests_java {
+public class UserTests {
 
     static String firstName = "John";
     static String lastName = "Doe";
