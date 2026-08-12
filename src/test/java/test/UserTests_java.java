@@ -1,13 +1,12 @@
 package test;
 
-import com.github.javafaker.Faker;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import requestBuilder.AdminRequestBuilder;
 import requestBuilder.UserRequestBuilder;
 
-public class UserTests {
+public class UserTests_java {
 
     static String firstName = "John";
     static String lastName = "Doe";
