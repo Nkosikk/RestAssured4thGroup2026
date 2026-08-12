@@ -7,7 +7,7 @@ import payloadBuilder.UserPayload;
 import static commons.Routes_java.BASE_URL;
 import static io.restassured.RestAssured.given;
 
-public class UserRequestBuilder {
+public class UserRequestBuilder_java {
 
     static String registeredUserId;
     static String userToken;

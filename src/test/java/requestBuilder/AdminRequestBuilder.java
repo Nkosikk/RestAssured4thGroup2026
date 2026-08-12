@@ -14,7 +14,7 @@ public class AdminRequestBuilder {
 //    public static String adminPassword = "@12345678";
 
     public static Response adminLogin() {
-        Response response = UserRequestBuilder.userLogin("admin@gmail.com", "@12345678");
+        Response response = UserRequestBuilder_java.userLogin("admin@gmail.com", "@12345678");
         adminToken = response.jsonPath().getString("data.token");
         System.out.println("Admin Token: " + adminToken);
         return response;
@@ -22,7 +22,7 @@ public class AdminRequestBuilder {
 
 
     public static Response UserApproval(){
-        String apiPath = "/APIDEV/admin/users/"+UserRequestBuilder.registeredUserId+"/approve";
+        String apiPath = "/APIDEV/admin/users/"+ UserRequestBuilder_java.registeredUserId+"/approve";
         return RestAssured.given()
                     .baseUri(BASE_URL)
                     .basePath(apiPath)
