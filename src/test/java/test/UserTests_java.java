@@ -4,7 +4,7 @@ import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import requestBuilder.AdminRequestBuilder;
-import requestBuilder.UserRequestBuilder_java;
+import requestBuilder.UserRequestBuilder;
 
 public class UserTests_java {
 
@@ -25,7 +25,7 @@ public class UserTests_java {
 //    }
     @Test
     public void testUserRegistration() {
-        Response response = UserRequestBuilder_java.userRegistrationRequest(firstName, lastName, email, password, groupId);
+        Response response = UserRequestBuilder.userRegistrationRequest(firstName, lastName, email, password, groupId);
         response.then().log().all();
 
         Assert.assertEquals(response.getStatusCode(), 201);
