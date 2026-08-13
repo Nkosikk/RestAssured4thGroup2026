@@ -24,15 +24,15 @@ public class AdminRequestBuilder {
     public static Response UserApproval(){
         String apiPath = "/APIDEV/admin/users/"+UserRequestBuilder.registeredUserId+"/approve";
         return RestAssured.given()
-                    .baseUri(BASE_URL)
-                    .basePath(apiPath)
-                    .contentType(ContentType.JSON)
-                    .header("Authorization", "Bearer " + AdminRequestBuilder.adminToken)
-                    .log().all()
+                .baseUri(BASE_URL)
+                .basePath(apiPath)
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + AdminRequestBuilder.adminToken)
+                .log().all()
                 .when()
-                    .put()
+                .put()
                 .then()
-                    .extract().response();
+                .extract().response();
 
     }
 
