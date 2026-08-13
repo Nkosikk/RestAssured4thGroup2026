@@ -9,6 +9,7 @@ import requestBuilder.AdminRequestBuilder;
 import requestBuilder.UserRequestBuilder;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class UserTests {
 
@@ -18,6 +19,8 @@ public class UserTests {
     static String email;
     static String password;
     static String groupId;
+    static String invalidUsername = "InvalidUser";
+    static String invalidPassword = "InvalidPass";
 
     static Faker faker = new Faker();
 
@@ -62,7 +65,28 @@ public class UserTests {
                     .body("data.approvalStatus", equalTo("approved"));
     }
 
+    @Test (dependsOnMethods = {"testUserApproval"})
+    public void testRegisteredUserLogin(){
+        UserRequestBuilder.userLogin(email, password)
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(200)
+                .body("success", equalTo(true))
+                .body("data.token", notNullValue());
+    }
 
+    @Test
+    public void InvalidLoginTest(){
+        //UserRequestBuilder.userLogin(invalidUsername, invalidPassword)
+            UserRequestBuilder.userLogin("invalidUsername", "invalidPassword")
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(401)
+                .body("success", equalTo(false))
+                .body("error_code", equalTo("INVALID_CREDENTIALS"));
+    }
 
 
 }
