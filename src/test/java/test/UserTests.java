@@ -8,9 +8,9 @@ import requestBuilder.UserRequestBuilder;
 
 public class UserTests {
 
-    static String firstName = "John";
+    static String firstName = "John ";
     static String lastName = "Doe";
-    static String email = "testGroup@example.com";
+    static String email = "testAPI2026" + System.currentTimeMillis() + "@example.com";
     static String password = "1234567!";
     static String groupId = "5328c91e-fc40-11f0-8e00-5000e6331276";
 
