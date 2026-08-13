@@ -10,11 +10,11 @@ public class AdminRequestBuilder {
 
     //add admin login method to get the token and store it in a static variable
     public static String adminToken;
-//    public static String adminUsername = "admin@gmail.com";
-//    public static String adminPassword = "@12345678";
+    public static String adminUsername = "admin@gmail.com";
+    public static String adminPassword = "@12345678";
 
     public static Response adminLogin() {
-        Response response = UserRequestBuilder.userLogin("admin@gmail.com", "@12345678");
+        Response response = UserRequestBuilder.userLogin(adminUsername, adminPassword);
         adminToken = response.jsonPath().getString("data.token");
         System.out.println("Admin Token: " + adminToken);
         return response;
