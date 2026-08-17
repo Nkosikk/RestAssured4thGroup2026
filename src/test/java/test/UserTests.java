@@ -9,6 +9,7 @@ import requestBuilder.AdminRequestBuilder;
 import requestBuilder.UserRequestBuilder;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 public class UserTests {
 
@@ -18,6 +19,8 @@ public class UserTests {
     static String email;
     static String password;
     static String groupId;
+    static String invalidUsername = "InvalidUsername";
+    static String invalidPassword = "InvalidPassword";
 
     static Faker faker = new Faker();
 
@@ -48,10 +51,10 @@ public class UserTests {
 
     @Test (dependsOnMethods = {"testUserRegistration", "testAdminLogin"})
     public void testUserApproval() {
- //       Response response = AdminRequestBuilder.UserApproval();
- //       response.then().log().all();
+        //       Response response = AdminRequestBuilder.UserApproval();
+        //       response.then().log().all();
 
- //       Assert.assertEquals(response.getStatusCode(), 200);
+        //       Assert.assertEquals(response.getStatusCode(), 200);
 
         AdminRequestBuilder.UserApproval()
                 .then()
@@ -60,6 +63,34 @@ public class UserTests {
                 .statusCode(200)
                 .body("success", equalTo(true))
                 .body("data.approvalStatus", equalTo("approved"));
+    }
+
+
+    @Test (dependsOnMethods = {"testUserApproval"})
+    public void testRegisteredUserLogin(){
+        UserRequestBuilder.userLogin(email,password)
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(200)
+                .body("success", equalTo(true))
+                .body("data.token", notNullValue());
+    }
+
+
+    @Test
+    public void  InvalidLoginTest() {
+        // UserRequestBuilder.userLogin(invalidUsername,invalidPassword)
+        UserRequestBuilder.userLogin("invalidUsername", "invalidPassword")
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(401)
+                .body("success", equalTo(false))
+                .body("error_code", equalTo("INVALID_CREDENTIALS"));
+
+    }
+
 
 
 
@@ -68,4 +99,10 @@ public class UserTests {
     }
 
 
-}
+
+
+
+
+
+
+
