@@ -23,7 +23,7 @@ public class userRequestBuilder {
                 .then()
                 .extract().response();
 
-        registeredUserId = response.jsonPath().getString("data.Id");
+        registeredUserId = response.jsonPath().getString("data.id");
 
         return response;
     }

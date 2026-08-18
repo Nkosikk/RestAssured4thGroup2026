@@ -11,7 +11,7 @@ public class userTests {
     static String lastName = "Jones";
     static String email = "jmonate@example.com";
     static String password = "#12345678";
-    static String groupId = "92833dab-c6eb-41ac-bc8c-dbe6b35d58e3";
+    static String groupId = "cdc7d817-b518-4d0c-a9fa-b8ae0585cd64";
 
     //static Faker faker = new Faker();
 
@@ -31,7 +31,7 @@ public class userTests {
 
         Assert.assertEquals(response.getStatusCode(), 201);
     }
-@Test(dependsOnMethods = "testUserRegistration")
+@Test
     public void testAdminLogin(){
         Response response = AdminRequestBuilder.adminLogin();
         response.then().log().all();
@@ -43,7 +43,7 @@ public class userTests {
         Response response = AdminRequestBuilder.userApproval();
         response.then().log().all();
 
-        Assert.assertEquals(response.getStatusCode(), 200);
+       Assert.assertEquals(response.getStatusCode(),200);
     }
 
 }
