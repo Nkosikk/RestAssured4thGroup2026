@@ -1,3 +1,5 @@
+package UserTests;
+
 import com.github.javafaker.Faker;
 import io.restassured.response.Response;
 import org.testng.Assert;
@@ -5,6 +7,9 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import requestBuilder.AdminRequestBuilder;
 import requestBuilder.userRequestBuilder;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 public class userTests {
 
@@ -14,6 +19,10 @@ public class userTests {
     static String email;
     static String password;
     static String groupId;
+    static String invalidUsername = "invalidUsername";
+    static String invalidPassword = "invalidPassword";
+
+
 
     static Faker faker = new Faker();
 
@@ -43,11 +52,33 @@ public class userTests {
         Assert.assertEquals(response.getStatusCode(), 200);
     }
 @Test(dependsOnMethods = {"testUserRegistration","testAdminLogin"})
-    public void userApproval(){
+    public void testUserApproval(){
         Response response = AdminRequestBuilder.userApproval();
         response.then().log().all();
 
        Assert.assertEquals(response.getStatusCode(),200);
     }
+    @Test(dependsOnMethods = "testUserApproval")
+    public  void testRegisteredUseLogin(){
+        userRequestBuilder.userLogin(email,password)
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(200)
+                .body("success", equalTo(true))
+                .body("data.token", notNullValue());
 
-}
+    }
+@Test
+    public void invalidLoginTest(){
+        userRequestBuilder.userLogin(invalidUsername,invalidPassword)
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(401)
+                .body("success", equalTo(false))
+                .body("error_code",equalTo("INVALID_CREDENTIALS"));
+    }
+
+    }
+
