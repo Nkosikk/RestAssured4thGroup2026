@@ -1,6 +1,7 @@
 package test;
 
 import com.github.javafaker.Faker;
+import commons.Routes;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -9,6 +10,8 @@ import requestBuilder.AdminRequestBuilder;
 import requestBuilder.UserRequestBuilder;
 import utils.DBConnection;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -29,23 +32,22 @@ public class UserTests {
 
     //initializing the variables with random data before running the tests
     @BeforeClass
-    public static void setupData() throws SQLException {
+    public static void setupData() {
         firstName = faker.name().firstName();
         lastName = faker.name().lastName();
         email = "Group4" + faker.internet().emailAddress(); //unique email for each test run
         password = "7654321!";
         groupId = "0d4364c2-3476-44dc-abfb-cc901b254ef2";
 
-        DBConnection.insertUser(email, password); // Insert the user into the database
-        DBConnection.getLoginDetails(email); // Retrieve the login details from the database
 
     }
     @Test
-    public void testUserRegistration() {
+    public void testUserRegistration() throws SQLException {
         Response response = UserRequestBuilder.userRegistrationRequest(firstName, lastName, email, password, groupId);
         response.then().log().all();
 
         Assert.assertEquals(response.getStatusCode(), 201);
+        DBConnection.insertUser(email, password); // Insert the user into the database
     }
 
     @Test
@@ -73,7 +75,8 @@ public class UserTests {
     }
 
     @Test (dependsOnMethods = {"testUserApproval"})
-    public void testRegisteredUserLogin(){
+    public void testRegisteredUserLogin() throws SQLException {
+        DBConnection.getLoginDetails(email); // Retrieve the login details from the database
        // UserRequestBuilder.userLogin(email, password) - Using the registered email and password from the setupData method
         UserRequestBuilder.userLogin(DBConnection.emailFromDB, DBConnection.passwordFromDB)
                 .then()
@@ -96,5 +99,35 @@ public class UserTests {
                 .body("error_code", equalTo("INVALID_CREDENTIALS"));
     }
 
+    @Test //(dependsOnMethods = {"testUserRegistration"})
+    public void schemaValidationTest() {
 
+        Response response  =  UserRequestBuilder.userRegistrationRequest(firstName, lastName, email, password, groupId);
+
+        try{
+            String savedSchema = Files.readString(
+                    Paths.get(Routes.JSON_SCHEMA_PATH+ "UserRegistrationSchema.json"));
+            System.out.println("Loaded JSON schema:\n" + savedSchema);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        String schemaPath = Paths.get(Routes.JSON_SCHEMA_PATH + "UserRegistrationSchema.json").toAbsolutePath().toString();
+        response.then().assertThat().body(io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchema(Paths.get(schemaPath).toFile()));
+
+    }
+
+    //Fix the UserApproval Schema test to validate the response schema for the UserApproval API
+
+    @Test
+    public void getCourseTest(){
+
+        AdminRequestBuilder.getCourse("beginner")
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(200)
+                .body("success", equalTo(true));
+    }
 }
