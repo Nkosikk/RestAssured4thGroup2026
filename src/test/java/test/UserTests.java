@@ -99,6 +99,28 @@ public class UserTests {
                 .body("error_code", equalTo("INVALID_CREDENTIALS"));
     }
 
+    @Test (dependsOnMethods = {"testUserRegistration", "testAdminLogin"})
+    public void userApprovalSchemaValidationTest() {
+        //The issue her was calling that we did not add test AdminLogin before calling the UserApproval API,
+        // so the token was not set and the request was failing. Now we have added the dependency on testAdminLogin
+        // to ensure that the admin login is successful before calling the UserApproval API.
+        Response response  =  AdminRequestBuilder.UserApproval();
+
+        try{
+            String savedSchema = Files.readString(
+                    Paths.get(Routes.JSON_SCHEMA_PATH+ "UserApprovalSchema.json"));
+            System.out.println("Loaded JSON schema:\n" + savedSchema);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        String schemaPath = Paths.get(Routes.JSON_SCHEMA_PATH + "UserApprovalSchema.json").toAbsolutePath().toString();
+        response.then().assertThat().body(io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchema(Paths.get(schemaPath).toFile()));
+
+    }
+
+
     @Test //(dependsOnMethods = {"testUserRegistration"})
     public void schemaValidationTest() {
 
