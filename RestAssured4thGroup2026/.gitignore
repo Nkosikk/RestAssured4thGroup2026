@@ -1,7 +1,7 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
-!**/src/UserTests.userTests/**/target/
+!**/src/UserTests.UserTests/**/target/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
@@ -29,7 +29,7 @@ allure-results/
 /.nb-gradle/
 build/
 !**/src/main/**/build/
-!**/src/UserTests.userTests/**/build/
+!**/src/UserTests.UserTests/**/build/
 
 ### VS Code ###
 .vscode/

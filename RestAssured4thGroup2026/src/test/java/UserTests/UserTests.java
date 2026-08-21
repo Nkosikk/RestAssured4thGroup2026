@@ -1,5 +1,6 @@
 package UserTests;
 
+import Utils.BDConnection;
 import com.github.javafaker.Faker;
 import io.restassured.response.Response;
 import org.testng.Assert;
@@ -7,11 +8,11 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import requestBuilder.AdminRequestBuilder;
 import requestBuilder.userRequestBuilder;
-
+import java.sql.SQLException;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
-public class userTests {
+public class UserTests {
 
     //Declaring variables to be used in the test
     static String firstName;
@@ -34,8 +35,11 @@ public class userTests {
         email = "Ituk" + faker.internet().emailAddress();
        password = "#12345678";
       groupId = "92833dab-c6eb-41ac-bc8c-dbe6b35d58e3";
-   }
 
+
+        DBConnection.insertUser(email,password);
+        DBConnection.getLoginDetails(email);
+   }
 
 @Test
     public void testUserRegistration(){
@@ -60,7 +64,8 @@ public class userTests {
     }
     @Test(dependsOnMethods = "testUserApproval")
     public  void testRegisteredUseLogin(){
-        userRequestBuilder.userLogin(email,password)
+        //userRequestBuilder.userLogin(email,password) Using the registered email and password from the setup methods
+        userRequestBuilder.userLogin()
                 .then()
                 .log().all()
                 .assertThat()
