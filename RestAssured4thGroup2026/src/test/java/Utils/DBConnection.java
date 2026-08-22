@@ -5,11 +5,11 @@ import commons.Routes;
 import java.sql.*;
 
 
-public class BDConnection {
+public class DBConnection {
     public static String emailFromDB;
     public static String passwordFromDB;
 
-    public static Connection getConnection() {
+    public static Connection getConnection() throws SQLException {
         String dbUrl = Routes.DB_URL;
         String dbUsername = Routes.DB_USERNAME;
         String dbPassword = Routes.DB_PASSWORD;

@@ -1,6 +1,6 @@
 package UserTests;
 
-import Utils.BDConnection;
+import Utils.DBConnection;
 import com.github.javafaker.Faker;
 import io.restassured.response.Response;
 import org.testng.Assert;
@@ -8,7 +8,9 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import requestBuilder.AdminRequestBuilder;
 import requestBuilder.userRequestBuilder;
+import requestBuilder.utilityRequestBuilder;
 import java.sql.SQLException;
+
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
@@ -29,7 +31,7 @@ public class UserTests {
 
     //Initializing random variables with data before running the tests
     @BeforeTest
-   public static void setupData(){
+   public static void setupData() throws SQLException {
        firstName = faker.name().firstName();
        lastName = faker.name().lastName();
         email = "Ituk" + faker.internet().emailAddress();
@@ -38,10 +40,10 @@ public class UserTests {
 
 
         DBConnection.insertUser(email,password);
-        DBConnection.getLoginDetails(email);
+        DBConnection.getLoginDetails(email); //insert into the DB
    }
 
-@Test
+@Test (dependsOnMethods = {"testUserApproval"})
     public void testUserRegistration(){
         Response response = userRequestBuilder.userRegistrationRequest(firstName,lastName,email,password,groupId);
         response.then().log().all();
@@ -65,7 +67,7 @@ public class UserTests {
     @Test(dependsOnMethods = "testUserApproval")
     public  void testRegisteredUseLogin(){
         //userRequestBuilder.userLogin(email,password) Using the registered email and password from the setup methods
-        userRequestBuilder.userLogin()
+        userRequestBuilder.userLogin(DBConnection.emailFromDB, DBConnection.passwordFromDB)
                 .then()
                 .log().all()
                 .assertThat()
@@ -84,6 +86,15 @@ public class UserTests {
                 .body("success", equalTo(false))
                 .body("error_code",equalTo("INVALID_CREDENTIALS"));
     }
-
+@Test
+    public void utilityTest(){
+        utilityRequestBuilder.utility()
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(200)
+                .body("success", equalTo(true));
     }
+}
+
 
