@@ -43,7 +43,7 @@ public class UserTests {
         DBConnection.getLoginDetails(email); //insert into the DB
    }
 
-@Test (dependsOnMethods = {"testUserApproval"})
+@Test
     public void testUserRegistration(){
         Response response = userRequestBuilder.userRegistrationRequest(firstName,lastName,email,password,groupId);
         response.then().log().all();
