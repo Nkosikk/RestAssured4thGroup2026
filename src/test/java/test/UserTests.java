@@ -7,6 +7,9 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import requestBuilder.AdminRequestBuilder;
 import requestBuilder.UserRequestBuilder;
+import utils.DBConnection;
+
+import java.sql.SQLException;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
@@ -26,12 +29,16 @@ public class UserTests {
 
     //initialising the variables with random data before running tests
     @BeforeClass
-    public static void setupData() {
+    public static void setupData() throws SQLException {
           firstName = faker.name().firstName();
           lastName = faker.name().lastName();
           email = "Group4" + faker.internet().emailAddress();//unique email for each test run
           password = "1234567!";
           groupId = "0d4364c2-3476-44dc-abfb-cc901b254ef2";
+
+        DBConnection.insertUser(email, password);
+       // DBConnection.getLoginDetails(email);
+        DBConnection.getLoginDetails(email);
     }
     @Test
     public void testUserRegistration() {
@@ -66,9 +73,13 @@ public class UserTests {
     }
 
 
-    @Test (dependsOnMethods = {"testUserApproval"})
+    @Test //(dependsOnMethods = {"testUserApproval"})
     public void testRegisteredUserLogin(){
-        UserRequestBuilder.userLogin(email,password)
+
+        System.out.println("Email = " + DBConnection.emailFromDB);
+        System.out.println("Password = " + DBConnection.passwordFromDB);
+       // UserRequestBuilder.userLogin(email,password)
+        UserRequestBuilder.userLogin(DBConnection.emailFromDB, DBConnection.passwordFromDB)
                 .then()
                 .log().all()
                 .assertThat()
