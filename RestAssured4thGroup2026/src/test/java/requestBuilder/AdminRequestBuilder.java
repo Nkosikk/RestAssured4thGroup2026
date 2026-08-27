@@ -5,6 +5,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 import static commons.Routes.BASE_URL;
+import static io.restassured.RestAssured.given;
 
 
 public class AdminRequestBuilder {
@@ -36,6 +37,21 @@ public class AdminRequestBuilder {
                 .then()
                 .extract().response();
 
+
+    }
+
+
+    public static Response getCourse(String level) {
+        String apiPath = "/APIDEV/courses/";
+        return given()
+                .baseUri(BASE_URL)
+                .basePath(apiPath)
+                .contentType(ContentType.JSON)
+                .queryParam("Level", level)
+                .log().all().when()
+                .get()
+                .then()
+                .extract().response();
 
     }
 }
