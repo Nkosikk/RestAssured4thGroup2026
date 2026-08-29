@@ -9,10 +9,11 @@ import static io.restassured.RestAssured.given;
 
 public class AdminRequestBuilder {
 
-    //add admin login method to get the token and store it in a static variable
+    //add admin login method to get the token and store it in a static variable for later use in other requests
     public static String adminToken;
-    public static String adminUsername = "admin@gmail.com";
-    public static String adminPassword = "@12345678";
+    public static String adminUsername = "titi@gmail.com";
+    public static String adminPassword = "tlou@97LT";
+
 
     public static Response adminLogin() {
         Response response = UserRequestBuilder.userLogin(adminUsername, adminPassword);
@@ -22,33 +23,12 @@ public class AdminRequestBuilder {
     }
 
 
-    public static Response UserApproval(){
-        String apiPath = "/APIDEV/admin/users/"+UserRequestBuilder.registeredUserId+"/approve";
-        return given()
-                    .baseUri(BASE_URL)
-                    .basePath(apiPath)
-                    .contentType(ContentType.JSON)
-                    .header("Authorization", "Bearer " + AdminRequestBuilder.adminToken)
-                    .log().all()
-                .when()
-                    .put()
-                .then()
-                    .extract().response();
 
     }
 
-    public static Response getCourse(String level){
-        String apiPath = "/APIDEV/courses";
-        return given()
-                    .baseUri(BASE_URL)
-                    .basePath(apiPath)
-                    .contentType(ContentType.JSON)
-                    .queryParam("level", level) //specifying query parameter for filtering courses by level
-                    .log().all()
-                .when()
-                    .get()
-                .then()
-                    .extract().response();
-    }
 
-}
+
+
+
+
+
