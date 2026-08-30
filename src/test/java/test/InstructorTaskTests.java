@@ -12,8 +12,7 @@ import requestBuilder.InstructorTaskRequestBuilder;
 import static org.testng.Assert.assertEquals;
 import static requestBuilder.InstructorTaskRequestBuilder.createTask;
 import static requestBuilder.InstructorTaskRequestBuilder.updateTask;
-import static requestBuilder.InstructorTaskRequestBuilder.getGetTaskCompletions;
-import static requestBuilder.InstructorTaskRequestBuilder.deleteTask;
+
 
 
 public class InstructorTaskTests {
