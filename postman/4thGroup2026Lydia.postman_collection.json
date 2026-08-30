@@ -1,0 +1,562 @@
+{
+  "info": {
+    "_postman_id": "6fcdcac3-3c18-45c6-a970-c52667202405",
+    "name": "4thGroup2026Lydia",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57132197",
+    "_collection_link": "https://go.postman.co/collection/57132197-6fcdcac3-3c18-45c6-a970-c52667202405?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Verify user role is admin\", function() {\r",
+                  "      let response = pm.response.json();\r",
+                  "      pm.expect(response.data.user.role).to.eql(\"admin\");\r",
+                  "});\r",
+                  "\r",
+                  "//Convert response to json\r",
+                  "let response = pm.response.json();\r",
+                  "\r",
+                  "// Extracting a token \r",
+                  "\r",
+                  "let token = response.data.token;\r",
+                  "\r",
+                  "\r",
+                  "//Save token to environment variable \r",
+                  "pm.environment.set(\"token\",token);\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"titi@gmail.com\",\r\n  \"password\": \"tlou@97LT\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/login",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Profile",
+      "item": [
+        {
+          "name": "profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success flag\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains user data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('Email', 'titi@gmail.com');",
+                  "    pm.expect(jsonData.data).to.have.property('Role', 'admin');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseURL}}/profile",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Instructor - Task",
+      "item": [
+        {
+          "name": "01 - GET instructor tasks",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://www.ndosiautomation.co.za/APIDEV/instructor/tasks?all=true&groupId=f552e054-8b24-41c2-a0ce-24018a205783&limit=100&offset=0",
+              "protocol": "https",
+              "host": [
+                "www",
+                "ndosiautomation",
+                "co",
+                "za"
+              ],
+              "path": [
+                "APIDEV",
+                "instructor",
+                "tasks"
+              ],
+              "query": [
+                {
+                  "key": "all",
+                  "value": "true"
+                },
+                {
+                  "key": "groupId",
+                  "value": "f552e054-8b24-41c2-a0ce-24018a205783"
+                },
+                {
+                  "key": "limit",
+                  "value": "100"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "02 - POST create task",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success flag\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "});",
+                  "",
+                  "pm.test(\"Response has correct message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.message).to.eql(\"Task created successfully\");",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains task data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property(\"id\");",
+                  "    pm.expect(jsonData.data.title).to.eql(\"Lydia API testing task\");",
+                  "});",
+                  "",
+                  "",
+                  "const jsonData = pm.response.json();",
+                  "pm.environment.set(\"taskId\",jsonData.data.id);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_secret_08ri}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"Lydia API testing task\",\r\n  \"description\": \"Verifying the task creation functionality for the instructor workflow\",\r\n  \"groupId\": \"f552e054-8b24-41c2-a0ce-24018a205783\",\r\n  \"priority\": \"medium\",\r\n  \"dueDate\": \"2026-09-04\",\r\n  \"studentIds\": [\r\n    \"string\"\r\n  ],\r\n  \"studentId\": \"string\",\r\n  \"documents\": [\r\n    {\r\n      \"url\": \"string\",\r\n      \"name\": \"string\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://www.ndosiautomation.co.za/APIDEV/instructor/tasks",
+              "protocol": "https",
+              "host": [
+                "www",
+                "ndosiautomation",
+                "co",
+                "za"
+              ],
+              "path": [
+                "APIDEV",
+                "instructor",
+                "tasks"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "03 - PUT update task",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Task was updated successfully\",function() {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.success).to.eql(true);\r",
+                  "    pm.expect(jsonData.message).to.eql(\"Task updated successfully\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains task Id\", function(){\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.data).to.have.property(\"id\")\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Lydia API testing updated task\",\n  \"description\": \"Updating the task creation functionality for the instructor workflow\",\n  \"groupId\": \"f552e054-8b24-41c2-a0ce-24018a205783\",\n  \"priority\": \"high\",\n  \"dueDate\": \"2026-09-06\",\n  \"studentIds\": [],\n  \"documents\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}{/instructor/tasks/{{taskId}}",
+              "host": [
+                "{{baseURL}}{"
+              ],
+              "path": [
+                "instructor",
+                "tasks",
+                "{{taskId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "04 - DELETE delete task",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 or 404\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+                  "});",
+                  "",
+                  "pm.test(\"Task deletion status\", function(){",
+                  "    const jsonData = pm.response.json();",
+                  "    if (pm.response.code === 200) {",
+                  "        pm.expect(jsonData.success).to.eql(true);",
+                  "        pm.expect(jsonData.message).to.include(\"deleted\");",
+                  "    } else {",
+                  "        pm.expect(jsonData.success).to.eql(false);",
+                  "        pm.expect(jsonData.error_code).to.eql(\"NOT_FOUND\");",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_secret_08ri}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseURL}}/instructor/tasks/{{taskId}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "instructor",
+                "tasks",
+                "{{taskId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "05 - GET task completions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Task completions retrieved successfully\", function() {",
+                  "    const jsonData =pm.response.json();",
+                  "    pm.expect(jsonData.success).to.eql(true);",
+                  "    pm.expect(jsonData.message).to.eql(\"Task completions retrieved successfully\");",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains task details\", function(){",
+                  "    const jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(jsonData.data.task).to.have.property(\"id\");",
+                  "    pm.expect(jsonData.data).to.have.property(\"completions\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_secret_08ri}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseURL}}/instructor/tasks/{{taskId}}/completions",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "instructor",
+                "tasks",
+                "{{taskId}}",
+                "completions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "06 - GET deleted task completions(negative)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Deleted task returns 404\", function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Task is no longer available\",function(){\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(jsonData.success).to.eql(false);\r",
+                  "    pm.expect(jsonData.error_code).to.eql(\"NOT_FOUND\");\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_secret_08ri}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseURL}}/instructor/tasks/{{taskId}}/completions",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "instructor",
+                "tasks",
+                "{{taskId}}",
+                "completions"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "json_web_token_0cai",
+      "secret": true
+    },
+    {
+      "key": "bearer_token_01q9",
+      "secret": true
+    },
+    {
+      "key": "bearer_token_0ovu",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_06x8",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_17ch",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_0qf8",
+      "secret": true
+    },
+    {
+      "key": "bearer_token_0pi0",
+      "secret": true
+    },
+    {
+      "key": "auth_secret_08ri",
+      "secret": true
+    }
+  ]
+}
