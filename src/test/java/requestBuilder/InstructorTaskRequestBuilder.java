@@ -42,7 +42,7 @@ public class InstructorTaskRequestBuilder {
     }
 
 
-    public static Response updateTask(String title, String description, String groupId, String priority, String dueDate) {
+    public static Response updateTask(String taskId,String title, String description, String groupId, String priority, String dueDate) {
         String apiPath = "/APIDEV/instructor/tasks/" + taskId ;
         Map<String, Object> payload = new HashMap<>();
         payload.put("title",title);
@@ -103,6 +103,29 @@ public class InstructorTaskRequestBuilder {
                 .then()
                 .extract()
                 .response();
+
+gi
+    }
+
+
+    public static Response getInstructorTask(boolean all, String groupId, int limit, int offset){
+        String apiPath = "/APIDEV/instructor/tasks";
+
+        System.out.println("GET TOKEN = "  + AdminRequestBuilder.adminToken);
+
+
+        return  given()
+                .baseUri(BASE_URL)
+                .basePath(apiPath)
+                .queryParam("all", all)
+                .queryParam("groupId", groupId)
+                .queryParam("limit", limit)
+                .queryParam("offset", offset)
+                .auth()
+                .oauth2(AdminRequestBuilder.adminToken)
+                .contentType(ContentType.JSON)
+                .when()
+                .get();
 
 
     }

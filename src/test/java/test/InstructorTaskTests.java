@@ -58,6 +58,7 @@ public class InstructorTaskTests {
     public void updateTaskTest() {
 
         Response response = updateTask(
+                taskId,
                 "Lydia API Testing Updated Task",
                 "Testing the instructor task update overflow",
                 "f552e054-8b24-41c2-a0ce-24018a205783",
@@ -111,6 +112,42 @@ public class InstructorTaskTests {
         System.out.println("Task deleted successfully: " + taskId);
 
     }
+
+    @Test(dependsOnMethods = "deleteTaskTest")
+    public void getDeletedTaskCompletionsTest() {
+
+        Response response = InstructorTaskRequestBuilder.getGetTaskCompletions(taskId);
+        //Negative assertion
+        response.then().log().all();
+
+        assertEquals(response.getStatusCode(), 404);
+
+        Assert.assertFalse(response.jsonPath().getBoolean("success"));
+
+        assertEquals(response.jsonPath().getString("error_code"), "NOT_FOUND");
+
+        System.out.println("Negative test passed: deleted task cannot be accessed " + taskId);
+
+    }
+
+    @Test(dependsOnMethods = "testAdminLogin")
+    public void getInstructorTest() {
+
+        Response response = InstructorTaskRequestBuilder.getInstructorTask(true, "f552e054-8b24-41c2-a0ce-24018a205783", 100, 0);
+
+        response.then().log().all();
+
+        assertEquals(response.getStatusCode(), 200);
+
+        Assert.assertTrue(response.jsonPath().getBoolean("success"));
+
+        System.out.println("Instructor tasks retrieved successfully");
+
+    }
+
+
+
+
 
 }
 
