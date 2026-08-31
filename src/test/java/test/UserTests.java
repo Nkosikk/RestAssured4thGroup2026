@@ -165,16 +165,6 @@ public class UserTests {
                 UserRequestBuilder.getTask(
                         UserRequestBuilder.createdTaskId);
 
-//        response.then()
-//                .log().all()
-//                .assertThat()
-//                .statusCode(200)
-//                .body("success", equalTo(true))
-//                .body("data.id",
-//                        equalTo(UserRequestBuilder.createdTaskId))
-//                .body("data.title",
-//                        equalTo(taskTitle));
-
         response.then()
                 .statusCode(200)
                 .body("success", equalTo(true))
