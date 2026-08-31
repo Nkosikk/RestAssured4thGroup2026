@@ -35,5 +35,19 @@ public class AdminRequestBuilder {
                     .extract().response();
 
     }
+    public static Response userLogin(String email, String password) {
+        String apiPath = "/APIDEV/login";
+        Response response = RestAssured.given()
+                    .baseUri(BASE_URL)
+                    .basePath(apiPath)
+                    .contentType(ContentType.JSON)
+                    .body("{\"email\":\"" + email + "\", \"password\":\"" + password + "\"}")
+                .when()
+                    .post()
+                .then()
+                    .extract().response();
+
+        return response;
+    }
 
 }

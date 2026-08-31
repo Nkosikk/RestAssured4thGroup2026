@@ -17,8 +17,8 @@ public class UserPayload {
         return registerUser;
     }
 
-//    --commented out the example payload method for now, can be used for practice purposes later
-//    @Test
+////   --commented out the example payload method for now, can be used for practice purposes later
+//  @Test
 //    public void payloadExample() {
 //        JSONObject examplePayload = new JSONObject();
 //        examplePayload.put("key1", "value1");

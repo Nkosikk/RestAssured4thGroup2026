@@ -28,7 +28,7 @@ public class UserTests {
         lastName = faker.name().lastName();
         email = "Group4" + faker.internet().emailAddress(); //unique email for each test run
         password = "7654321!";
-        groupId = "0d4364c2-3476-44dc-abfb-cc901b254ef2";
+        groupId = "fa37dc11-f688-4ce6-ab78-b2014ee9e199";
     }
     @Test
     public void testUserRegistration() {
@@ -61,8 +61,15 @@ public class UserTests {
                     .body("success", equalTo(true))
                     .body("data.approvalStatus", equalTo("approved"));
     }
+    @Test (dependsOnMethods = {"testUserApproval"})
+    public static void testUserLogin() {
+        Response response = UserRequestBuilder.userLogin(email, password);
+        response.then().log().all();
 
-
+        Assert.assertEquals(response.getStatusCode(), 200);
+        //get token from response and save it in a static variable for future use
+        String userToken = response.jsonPath().getString("data.token");
+    }
 
 
 }
