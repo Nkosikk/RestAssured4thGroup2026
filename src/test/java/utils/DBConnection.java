@@ -18,9 +18,9 @@ public class DBConnection {
 
     public static void insertUser(String email, String password) throws SQLException {
         //Connecting, where connection will be closed automatically
-        try (Connection connection = getConnection()){
+        try (Connection connection = getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement
-                    ("INSERT INTO RestAssuredUsers (email, password) VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS) ) {
+                    ("INSERT INTO BrenAPIAssessment (email, password) VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1, email);
                 ps.setString(2, password);
                 ps.executeUpdate();
@@ -31,7 +31,7 @@ public class DBConnection {
                     }
                 }
 
-            }catch (SQLException e) {
+            } catch (SQLException e) {
                 System.out.println("Error inserting value: " + e.getMessage());
             }
         }
@@ -40,7 +40,7 @@ public class DBConnection {
 
     public static void getLoginDetails(String userEmail) throws SQLException {
         try (Connection connection = getConnection()) {
-            try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM RestAssuredUsers WHERE email = ?")) {
+            try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM BrenAPIAssessment WHERE email = ?")) {
                 ps.setString(1, userEmail);
                 try (ResultSet resultSet = ps.executeQuery()) {
                     while (resultSet.next()) {
@@ -54,5 +54,26 @@ public class DBConnection {
             }
         }
     }
+
+    public static void testConnection() {
+
+        try (Connection connection = getConnection()) {
+
+            if (connection != null && !connection.isClosed()) {
+
+                System.out.println("✅ Database connection successful!");
+
+            }
+
+        } catch (SQLException e) {
+
+            System.out.println("❌ Database connection failed!");
+
+            e.printStackTrace();
+
+        }
+
+    }
+
 
 }
