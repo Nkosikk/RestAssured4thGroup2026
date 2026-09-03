@@ -9,9 +9,11 @@ import requestBuilder.GroupRequestsBuilder;
 import requestBuilder.TaskRequests;
 import requestBuilder.UserRequestBuilder;
 import utils.TestData;
-
+import org.testng.annotations.Listeners;
+import Reports.ExtentListener;
 import static io.restassured.RestAssured.given;
 
+@Listeners(ExtentListener.class)
 public class TaskFlowTests {
 
     @Test
