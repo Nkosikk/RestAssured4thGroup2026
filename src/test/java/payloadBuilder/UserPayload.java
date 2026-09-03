@@ -1,7 +1,6 @@
 package payloadBuilder;
 
 import org.json.simple.JSONObject;
-import org.testng.annotations.Test;
 
 public class UserPayload {
 
@@ -35,6 +34,32 @@ public class UserPayload {
 
         return loginUser;
     }
+    public class TaskPayload {
 
+        public static String createTask(String groupId) {
+
+            return """
+                {
+                  "title": "Task created from restassured",
+                  "description": "create a api for instructor task",
+                  "groupId": "%s",
+                  "priority": "medium",
+                  "dueDate": "2026-09-30T12:39:15.648Z",
+                  "studentIds": [
+                    "12346579",
+                    "78946513"
+                  ],
+                  "studentId": "12345679",
+                  "documents": [
+                    {
+                      "url": "https://www.ndosiautomation.co.za/#dashboard",
+                      "name": "Ceejay"
+                    }
+                  ]
+                }
+                """.formatted(groupId);
+        }
+
+    }
 
 }

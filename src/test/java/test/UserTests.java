@@ -2,6 +2,7 @@ package test;
 
 import com.github.javafaker.Faker;
 import io.restassured.response.Response;
+import org.json.simple.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -30,6 +31,7 @@ public class UserTests {
         password = "7654321!";
         groupId = "fa37dc11-f688-4ce6-ab78-b2014ee9e199";
     }
+
     @Test
     public void testUserRegistration() {
         Response response = UserRequestBuilder.userRegistrationRequest(firstName, lastName, email, password, groupId);
@@ -46,7 +48,7 @@ public class UserTests {
         Assert.assertEquals(response.getStatusCode(), 200);
     }
 
-    @Test (dependsOnMethods = {"testUserRegistration","testAdminLogin"})
+    @Test(dependsOnMethods = {"testUserRegistration", "testAdminLogin"})
     public void testUserApproval() {
 //        Response response = AdminRequestBuilder.UserApproval();
 //        response.then().log().all();
@@ -55,13 +57,14 @@ public class UserTests {
 
         AdminRequestBuilder.UserApproval()
                 .then()
-                    .log().all()
-                    .assertThat()
-                    .statusCode(200)
-                    .body("success", equalTo(true))
-                    .body("data.approvalStatus", equalTo("approved"));
+                .log().all()
+                .assertThat()
+                .statusCode(200)
+                .body("success", equalTo(true))
+                .body("data.approvalStatus", equalTo("approved"));
     }
-    @Test (dependsOnMethods = {"testUserApproval"})
+
+    @Test(dependsOnMethods = {"testUserApproval"})
     public static void testUserLogin() {
         Response response = UserRequestBuilder.userLogin(email, password);
         response.then().log().all();
@@ -70,6 +73,5 @@ public class UserTests {
         //get token from response and save it in a static variable for future use
         String userToken = response.jsonPath().getString("data.token");
     }
-
 
 }

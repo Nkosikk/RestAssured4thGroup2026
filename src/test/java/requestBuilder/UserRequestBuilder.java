@@ -47,4 +47,13 @@ public class UserRequestBuilder {
     }
 
 
+        public static Response getGroupStudents(String groupId, String userToken) {
+        String apiPath = "/APIDEV/groups/" + groupId + "/students";
+        return given()
+                .baseUri(BASE_URL)
+                .basePath(apiPath)
+                .header("Authorization", "Bearer " + userToken)
+                .when()
+                .get();
+    }
 }
