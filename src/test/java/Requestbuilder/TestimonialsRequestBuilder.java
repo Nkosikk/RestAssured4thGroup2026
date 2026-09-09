@@ -60,5 +60,51 @@ public class TestimonialsRequestBuilder {
         return response;
     }
 
+    public static Response publicTestimonialRequest(){
+
+        String apiPath = "/APIDEV/testimonials?limit=50&offset=0";
+        Response response = given()
+                .baseUri(BASE_URL)
+                .basePath(apiPath)
+                .contentType("application/json")
+                .when()
+                .get()
+                .then()
+                .extract().response();
+
+        return response;
+    }
+
+    public static Response getMyTestimonialsRequest(){
+
+        String apiPath = "/APIDEV/my-testimonials";
+        Response response = given()
+                .baseUri(BASE_URL)
+                .basePath(apiPath)
+                .header("Authorization", "Bearer " + loginToken)
+                .contentType("application/json")
+                .when()
+                .get()
+                .then()
+                .extract().response();
+
+        return response;
+    }
+
+    public static Response deleteTestimonialRequest(String testimonialId){
+
+        String apiPath = "/APIDEV/testimonials/" + testimonialId;
+        Response response = given()
+                .baseUri(BASE_URL)
+                .basePath(apiPath)
+                .contentType("application/json")
+                .header("Authorization", "Bearer " + loginToken)
+                .when()
+                .delete()
+                .then()
+                .extract().response();
+
+        return response;
+    }
 
 }
