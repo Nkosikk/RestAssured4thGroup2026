@@ -3,7 +3,7 @@ package Payloadbuilder;
 
 import org.json.JSONObject;
 
-public class Payloads {
+public class TestimonialsPayloads {
 
     public static JSONObject LoginPayload(String email, String password) {
         JSONObject payload = new JSONObject();
