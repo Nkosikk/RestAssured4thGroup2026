@@ -7,7 +7,7 @@ public class TestimonialsPayloads {
 
     public static JSONObject LoginPayload(String email, String password) {
         JSONObject payload = new JSONObject();
-        payload.put("username", email);
+        payload.put("email", email);
         payload.put("password", password);
         return payload;
     }
