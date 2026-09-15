@@ -14,6 +14,7 @@ allure-results/
 *.iml
 *.ipr
 
+
 ### Eclipse ###
 .apt_generated
 .classpath
