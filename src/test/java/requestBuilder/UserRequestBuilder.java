@@ -3,7 +3,7 @@ package requestBuilder;
 
 import io.restassured.response.Response;
 
-import static commons.Routes.BASE_URL;
+import static commons.Routes.*;
 import static io.restassured.RestAssured.given;
 import static payloadBuilder.UserPayload.loginUserPayload;
 import static payloadBuilder.UserPayload.registerUserPayload;
@@ -15,10 +15,9 @@ public class UserRequestBuilder {
 
     public static Response userRegistrationRequest(String firstname, String lastname, String email, String password, String groupId) {
 
-        String apiPath = "/APIDEV/register";
         Response response = given()
                 .baseUri(BASE_URL)
-                .basePath(apiPath)
+                .basePath(REGISTER)
                 .contentType("application/json") // other way if it's only for JSON type : contentType(ContentType.JSON)
                 .body(registerUserPayload(firstname, lastname, email, password, groupId))
                 .when()
@@ -26,7 +25,7 @@ public class UserRequestBuilder {
                 .then()
                 .extract().response();
 
-        registerUserId= response.jsonPath().getString("data.id");
+        registerUserId = response.jsonPath().getString("data.id");
 
         return response;
 
@@ -34,10 +33,9 @@ public class UserRequestBuilder {
 
     public static Response userLoginRequest(String email, String password) {
 
-        String apiPath = "/APIDEV/login";
         Response response = given()
                 .baseUri(BASE_URL)
-                .basePath(apiPath)
+                .basePath(LOGIN)
                 .contentType("application/json")
                 .body(loginUserPayload(email, password))
                 .when()

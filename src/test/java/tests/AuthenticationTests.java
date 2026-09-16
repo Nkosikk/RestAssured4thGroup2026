@@ -9,7 +9,7 @@ import requestBuilder.AdminRequestBuilder;
 
 import static requestBuilder.UserRequestBuilder.userRegistrationRequest;
 
-public class UserTests {
+public class AuthenticationTests {
 
     static String firstname = "James";
     static String lastname = "Bond";

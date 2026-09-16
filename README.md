@@ -3,7 +3,7 @@
 API test automation suite using RestAssured, TestNG and Maven. Tests produce Allure results for reporting.
 
 ## Summary
-This repository contains automated API tests implemented with RestAssured (Java) and TestNG. Tests exercise user and admin flows, validate JSON schemas, and can interact with a MySQL test database.
+This repository contains automated API tests implemented with RestAssured (Java) and TestNG. Tests exercise user and requestBuilder flows, validate JSON schemas, and can interact with a MySQL test database.
 
 ## Requirements
 - Java 21 (JDK)
@@ -41,7 +41,7 @@ This repository contains automated API tests implemented with RestAssured (Java)
 - pom.xml — Maven configuration
 - src/test/java — test sources
   - commons — shared routes/config
-  - requestBuilder — RestAssured request builders for user/admin flows
+  - requestBuilder — RestAssured request builders for user/requestBuilder flows
   - payloadBuilder — JSON payload helpers
   - utils — helpers (DB connection, etc.)
   - test — TestNG test classes (e.g., UserTests.java)
